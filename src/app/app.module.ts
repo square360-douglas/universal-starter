@@ -5,6 +5,9 @@ import {RouterModule} from '@angular/router';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
 import {TransferHttpCacheModule} from '@nguniversal/common';
+import {CmsRouterModule} from './cms-router/cms-router.module';
+import {HttpClientModule} from '@angular/common/http';
+import {DefaultPageComponent} from './cms-router/default-page/default-page.component';
 
 @NgModule({
   declarations: [
@@ -12,15 +15,18 @@ import {TransferHttpCacheModule} from '@nguniversal/common';
     HomeComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({appId: 'my-app'}),
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full'},
-      { path: 'lazy', loadChildren: './lazy/lazy.module#LazyModule'},
-      { path: 'lazy/nested', loadChildren: './lazy/lazy.module#LazyModule'}
-    ]),
+    BrowserModule.withServerTransition({appId: 'ng-universal-demo'}),
+    RouterModule.forRoot([]),
+    HttpClientModule,
     TransferHttpCacheModule,
+    CmsRouterModule,
   ],
-  providers: [],
+  providers: [
+  ],
+  entryComponents: [
+    HomeComponent,
+      DefaultPageComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

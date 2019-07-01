@@ -96,7 +96,7 @@
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
-          "options": {            
+          "options": {
             "tsConfig": [
               "src/tsconfig.app.json"
             ],
@@ -126,7 +126,7 @@
       }
     },
     "ng-universal-demo-e2e": {
-      "root": "",
+      "root": "e2e",
       "projectType": "application",
       "cli": {},
       "schematics": {},
@@ -178,5 +178,6 @@
     "@schematics/angular:service": {
       "spec": false
     }
-  }
+  },
+  "defaultProject": "ng-universal-demo"
 }
