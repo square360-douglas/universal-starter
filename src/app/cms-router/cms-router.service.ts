@@ -4,6 +4,7 @@ import {CmsMenuItem} from './CmsMenuItem';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {CmsRoute, CmsRoutes} from './CmsRoute';
+import {TransferHttpService } from '@gorniv/ngx-transfer-http';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class CmsRouterService {
   protected menu: Array<CmsMenuItem> = [];
 
   constructor(
-      protected http: HttpClient,
-      // protected http: TransferHttpService,
+      // protected http: HttpClient,
+      protected http: TransferHttpService,
       protected router: Router,
 
   ) {}
