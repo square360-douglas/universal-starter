@@ -10,11 +10,13 @@ import {HttpClientModule} from '@angular/common/http';
 import {DefaultPageComponent} from './cms-router/default-page/default-page.component';
 import { TransferHttpModule, TransferHttpService } from '@gorniv/ngx-transfer-http';
 import { PrebootModule } from 'preboot';
+import { AboutPageComponent } from './about-page/about-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    AboutPageComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-universal-demo'}),
@@ -30,8 +32,9 @@ import { PrebootModule } from 'preboot';
     TransferHttpService,
   ],
   entryComponents: [
+    DefaultPageComponent,
     HomeComponent,
-    DefaultPageComponent
+    AboutPageComponent
   ],
   bootstrap: [AppComponent]
 })

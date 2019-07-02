@@ -18,7 +18,8 @@
     "compile:server": "tsc -p server.tsconfig.json",
     "generate:prerender": "cd dist && node prerender",
     "serve:prerender": "cd dist/browser && http-server",
-    "serve:ssr": "node dist/server"
+    "serve:ssr": "node dist/server",
+    "sitemap": "cd dist && node sitemap"
   },
   "pre-commit": [],
   "private": true,
@@ -39,9 +40,13 @@
     "@nguniversal/module-map-ngfactory-loader": "^6.0.0",
     "core-js": "^2.4.1",
     "express": "^4.15.2",
+    "lodash": "^4.17.11",
     "preboot": "^7.0.0",
     "reflect-metadata": "^0.1.10",
     "rxjs": "6.3.3",
+    "sitemap-stream-parser": "^1.7.0",
+    "sitemap-to-array": "^6.0.0",
+    "sitemapper": "^2.2.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

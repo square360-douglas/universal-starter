@@ -4,6 +4,7 @@ import {HomeComponent} from './home/home.component';
 import {DefaultPageComponent} from './cms-router/default-page/default-page.component';
 import {AppSettings} from './app.settings';
 import {CmsRouterService} from './cms-router/cms-router.service';
+import {AboutPageComponent} from './about-page/about-page.component';
 
 @Component({
   selector: 'app-root',
@@ -50,9 +51,9 @@ export class AppComponent {
   ) {
     this.initRoutes();
 
-    appRef.isStable.subscribe(s => {
-      console.log('Stable', s);
-    });
+    // appRef.isStable.subscribe(s => {
+    //   console.log('Stable', s);
+    // });
   }
 
 
@@ -80,6 +81,10 @@ export class AppComponent {
       {
         path: 'home',
         component: HomeComponent,
+      },
+      {
+        path: 'about',
+        component: AboutPageComponent,
       },
       {path: '**', component: DefaultPageComponent},
     ];
