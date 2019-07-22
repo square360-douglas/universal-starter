@@ -44,9 +44,6 @@ export class CmsRouterService {
           // Extract ng routes from the menu data to match the menu items
           this.transformMenuIntoRoutes(data, options);
           // Apply our new routes to the routing system
-          // console.log('Async Routes', this.routes);
-          console.log('Got Async Routes');
-
           // this.http.get(url).subscribe(() => console.log('got stuff again'));
           this.resetRoutes(this.routes);
         }

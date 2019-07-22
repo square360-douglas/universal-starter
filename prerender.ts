@@ -2,6 +2,8 @@
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
 import {readFileSync, writeFileSync, existsSync, mkdirSync} from 'fs';
+require ('mock-fs');
+
 import {join} from 'path';
 
 import {enableProdMode} from '@angular/core';
@@ -25,26 +27,24 @@ const index = readFileSync(join('browser', 'index.html'), 'utf8');
 
 let previousRender = Promise.resolve();
 
-
 const rr = new RouteResolver('http://hld.mcmac.localhost/sitemap.xml', ROUTES, 3);
 rr.getAllRoutes().then(
     routes => {
-      console.log('Routes', routes);
+      // console.log('Routes', routes);
       // Iterate each route path
       routes.forEach(route => {
-
-        console.log('Route: ', route);
 
         const fullPath = join(BROWSER_FOLDER, route);
 
         // Make sure the directory structure is there
         if (!existsSync(fullPath)) {
-          mkdirSync(fullPath);
+          console.log('Making ', fullPath);
+          mkdirSync(fullPath, {recursive: true});
         }
 
         // Writes rendered HTML to index.html, replacing the file if it already exists.
         previousRender = previousRender.then(
-        _ => {
+          _ => {
             const options = {
                 document: index,
                 url: route,
@@ -52,13 +52,13 @@ rr.getAllRoutes().then(
                     provideModuleMap(LAZY_MODULE_MAP)
                 ]
             };
-            console.log(options);
-            return renderModuleFactory(AppServerModuleNgFactory, options);
-            },
+            const render = renderModuleFactory(AppServerModuleNgFactory, options);
+            return render;
+          },
             e => console.log('Error in previousRender', e)
         ).then(
             (html) => {
-                console.log('fullPath', fullPath);
+                // console.log('fullHtml for ' + fullPath);
                 writeFileSync(join(fullPath, 'index.html'), html)
             },
             (e) => console.log('Couldn\'t render', e)
