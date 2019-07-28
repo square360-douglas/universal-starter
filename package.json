@@ -19,7 +19,8 @@
     "generate:prerender": "cd dist && node prerender",
     "serve:prerender": "cd dist/browser && http-server",
     "serve:ssr": "node dist/server",
-    "sitemap": "cd dist && node sitemap"
+    "sitemap": "cd dist && node sitemap",
+    "fea": "pm2 start ecosystem.config.js"
   },
   "pre-commit": [],
   "private": true,
@@ -42,6 +43,7 @@
     "express": "^4.15.2",
     "lodash": "^4.17.11",
     "mock-fs": "^4.10.1",
+    "pm2": "^3.5.1",
     "preboot": "^7.0.0",
     "reflect-metadata": "^0.1.10",
     "rxjs": "6.3.3",
