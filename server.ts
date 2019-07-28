@@ -8,7 +8,7 @@ import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
 import * as express from 'express';
 import { join } from 'path';
-
+import { Renderer} from './src/rerender';
 // Faster server renders w/ Prod mode (dev mode never needed)
 enableProdMode();
 
@@ -33,7 +33,18 @@ app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
 
 // Example Express Rest API endpoints
-// app.get('/api/**', (req, res) => { });
+//app.get('/api/**', (req, res) => { });
+
+// Render Webhook
+const siteRenderer = new Renderer();
+app.post('/api/**', (req, res) => {
+  siteRenderer.start();
+  const response = {
+    data: 'Re-rendering!',
+  };
+  res.status(200);
+  res.send(JSON.stringify(response));
+});
 
 // Server static files from /browser
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
@@ -44,6 +55,12 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
 app.get('*', (req, res) => {
   res.render('index', { req });
 });
+
+// app.get('/rerender', (req, res) => {
+//
+//   res.send('Hello World!')
+// });
+
 
 // Start up the Node server
 app.listen(PORT, () => {
