@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AppSettings} from '../app.settings';
+import {TransferHttpService} from '@gorniv/ngx-transfer-http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,8 @@ import {AppSettings} from '../app.settings';
 export class DrupalService {
 
   constructor(
-      private http: HttpClient,
-      // private http: TransferHttpService,
-
+      // private http: HttpClient,
+      private http: TransferHttpService,
   ) { }
 
 
@@ -34,7 +34,7 @@ export class DrupalService {
       universalViewUri += '?' + includes.join('&');
     }
 
-    console.log(universalViewUri);
+    // console.log(universalViewUri);
 
     const blueprint = [
       {

@@ -45,7 +45,7 @@ export class DefaultPageComponent implements OnInit {
 
   processJsonApiResponse(data: any) {
     this.jsonApiResponse = data;
-    console.log('JSONAPI response');
+    // console.log('JSONAPI response');
     const jsonResource = JSON.parse(data['resolvedResource#uri{0}'].body);
     if (jsonResource) {
       // console.log(jsonResource);
