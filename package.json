@@ -20,7 +20,8 @@
     "serve:prerender": "cd dist/browser && http-server",
     "serve:ssr": "node dist/server",
     "sitemap": "cd dist && node sitemap",
-    "fea": "pm2 start ecosystem.config.js"
+    "dougsby": "pm2 start ecosystem.config.js",
+    "dssr": "npm run build:ssr && npm run serve:ssr"
   },
   "pre-commit": [],
   "private": true,
