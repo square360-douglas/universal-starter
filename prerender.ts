@@ -16,6 +16,8 @@ import {renderModuleFactory} from '@angular/platform-server';
 import {ROUTES} from './static.paths';
 
 import {RouteResolver} from './sitemap';
+import {AppSettings} from './src/app/app.settings';
+
 
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP} = require('./server/main');
@@ -27,10 +29,11 @@ const index = readFileSync(join('browser', 'index.html'), 'utf8');
 
 let previousRender = Promise.resolve();
 
-const rr = new RouteResolver('http://hld.mcmac.localhost/sitemap.xml', ROUTES, 3);
+const rr = new RouteResolver(AppSettings.SITEMAP_SOURCE, ROUTES, 3);
+
 rr.getAllRoutes().then(
     routes => {
-      // console.log('Routes', routes);
+      console.log('Routes', routes);
       // Iterate each route path
       routes.forEach(route => {
 
@@ -38,7 +41,7 @@ rr.getAllRoutes().then(
 
         // Make sure the directory structure is there
         if (!existsSync(fullPath)) {
-          console.log('Making ', fullPath);
+          console.log('Starting ', fullPath);
           mkdirSync(fullPath, {recursive: true});
         }
 
@@ -58,7 +61,7 @@ rr.getAllRoutes().then(
             e => console.log('Error in previousRender', e)
         ).then(
             (html) => {
-                // console.log('fullHtml for ' + fullPath);
+                console.log('Written ' + fullPath);
                 writeFileSync(join(fullPath, 'index.html'), html)
             },
             (e) => console.log('Couldn\'t render', e)
