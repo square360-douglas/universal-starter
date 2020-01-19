@@ -41,7 +41,7 @@ export class Renderer {
         // _process.stderr.pipe(dest); // since these are streams, you can pipe them elsewhere
 
         this._process.on('close', (code) => {
-            console.log(`child process exited with code ${code}`);
+            console.log(`Child process exited with code ${code}`);
         });
 
     }
