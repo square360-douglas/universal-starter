@@ -1,43 +1,104 @@
-# Angular Universal Starter
+# Headless Drupal Angular Universal Starter
 
 ![Angular Universal](https://angular.io/generated/images/marketing/concept-icons/universal.png)
 
-A minimal Angular starter for Universal JavaScript using the [Angular CLI](https://github.com/angular/angular-cli)
-If you're looking for the Angular Universal repo go to [**angular/universal**](https://github.com/angular/universal)  
+A POC for a starter repository for Angular Headless Drupal. 
 
-## Getting Started
+**Note** This is built upon a clone of the repo [https://github.com/angular/universal-starter](universal-starter]). \
+The parent repo is no longer maintained as of Sep 2019, no attempt has been made to update this POC since.    
 
-This demo is built following the [Angular CLI Wiki guide](https://github.com/angular/angular-cli/wiki/stories-universal-rendering)
+This POC aims to investigate specific problems which are not necessarily relevant to all applications.
+* Dynamic routing determined by the CMS
+* Comparison of Dynamic & Static SSR  
 
-We're utilizing packages from the [Angular Universal @nguniversal](https://github.com/angular/universal) repo, such as [ng-module-map-ngfactory-loader](https://github.com/angular/universal/modules/module-map-ngfactory-loader) to enable Lazy Loading.
 
----
+## Drupal Setup
 
-### Build Time Pre-rendering vs. Server-side Rendering (SSR)
-This repo demonstrates the use of 2 different forms of Server-side Rendering.
+### Install & enable jsonapi extra modules
 
-**Pre-render** 
-* Happens at build time
-* Renders your application and replaces the dist index.html with a version rendered at the route `/`.
+JSON API includes useful extras like overriding endpoints, default field includes.
 
-**Server-side Rendering (SSR)**
-* Happens at runtime
-* Uses `ngExpressEngine` to render your application on the fly at the requested url.
+    compozer require drupal/jsonapi_extras
+    drush en jsonapi jsonapi_extras
 
----
+### Install & enable rest menu modules
 
-### Installation
-* `npm install` or `yarn`
+    compozer require drupal/rest_menu_tree
+    drush en rest_menu_tree
 
-### Development (Client-side only rendering)
-* run `npm run start` which will start `ng serve`
+Enable Menu Tree web service, grant permission to anonymous user.
 
-### Production (also for testing SSR/Pre-rendering locally)
-**`npm run build:ssr && npm run serve:ssr`** - Compiles your application and spins up a Node Express to serve your Universal application on `http://localhost:4000`.
+Check menu available at [http://ypfs.mcmac.localhost/entity/menu/main/tree?_format=json](http://ypfs.mcmac.localhost/entity/menu/main/tree?_format=json)
 
-**`npm run build:prerender && npm run serve:prerender`** - Compiles your application and prerenders your applications files, spinning up a demo http-server so you can view it on `http://localhost:8080`
+NB rest_menu_items previously had problem with unpublished nodes.
+
+### Routing & Subrequests
+
+Install & enable subrequests & decoupled router
+
+    compozer require drupal/subrequests
+    drush en subrequests
+    compozer require drupal/decoupled_router
+    drush en decoupled_router
+
+Grant issue subrequests permission to anonymous
+
+Fix problems with subrequests validation:
+
+Disable drupal page cache and patch subrequests. Apply patch #4 in [https://www.drupal.org/project/subrequests/issues/3029570](https://www.drupal.org/project/subrequests/issues/3029570)
+
+There is potentially a better solution to this now, but this gets the job done for now.
+
+### Install, enable & configure Sitemap
+
+Used by dougsby to determins pages to be statically rendered
+
+    compozer require drupal/simple_sitemap
+    drush en simple_sitemap
+
+## Application Setup
+
+Setup Application Endpoints in `app.settings.ts`
+
+    export class AppSettings {
+        public static FULL_SITE = 'http://ypfs.mcmac.localhost/';
+        public static API_ENDPOINT = 'http://ypfs.mcmac.localhost';
+        public static MY_BASE_URL = 'http://localhost:4200';
+    }
+
+## Running application
+
+### Development mode:
+
+    ng serve
+
+### Dynamic SSR mode:
+
+    npm run dssr
+
+### Static SSR mode:
+
+Compile and prerender static pages
+
+    npm run build:prerender
+
+Launch application and proxy server using pm2
+
+    npm run dougsby
+
+### Remote rendering
+
+Post anything to:
+
+    http://localhost:4000/api/rerender
+
+## Time to render
+
+A basic page rendering the JSON object: ~3400 pages analysed in 7m21s == 0.15s per page
+
+
+## Deploying
 **Note**: To deploy your static site to a static hosting platform you will have to deploy the `dist/browser` folder, rather than the usual `dist`
-
 
 ## Universal "Gotchas"
 Moved to [/angular/universal/blob/master/docs/gotchas.md](https://github.com/angular/universal/blob/master/docs/gotchas.md)
